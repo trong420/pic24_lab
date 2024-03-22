@@ -1,0 +1,68 @@
+#pragma config FNOSC = PRI
+#pragma config POSCMOD = HS
+#pragma config JTAGEN = OFF
+#pragma config WINDIS =OFF
+#pragma config FWDTEN = OFF
+
+#define FCY 8000000UL
+#include "xc.h"
+#include "libpic30.h"
+#include "stdio.h"
+#include "lcd.h"
+
+
+int main(void) {
+    int countS3=0, countS6=0;
+    LCD_Initialize();
+    TRISDbits.TRISD6 =1;
+    TRISDbits.TRISD13=1;
+    TRISDbits.TRISD7=1;
+#ifdef __PIC24FJ1024GB610__
+    ANSDbits.ANSD6=0;
+    ANSDbits.ANSD7=0;
+#endif
+    TRISA=0;
+#ifdef __PIC24FJ1024GB610__
+    ANSA=0;
+#endif
+    while(1){
+        LCD_ClearScreen();
+        while(1){
+            if(!PORTDbits.RD6){
+                while(!PORTDbits.RD6);
+                countS3++;
+                __delay_ms(100);
+                
+            }
+            if(!PORTDbits.RD13){
+                while(!PORTDbits.RD13);
+                break;
+            }
+            LCD_ClearScreen();
+        printf("so thu nhat la:%d",countS3);
+        
+                __delay_ms(1000);
+        }
+        while(1){
+            if(!PORTDbits.RD7){
+                while(!PORTDbits.RD7);
+                countS6++;
+                __delay_ms(100);
+            }
+            if(!PORTDbits.RD13){
+                while(!PORTDbits.RD13);
+                        countS3=countS3+countS6;
+                        LCD_ClearScreen();
+                        printf("tong cua 2 so la:%d",countS3);
+                        __delay_ms(1000);
+                        break;
+                        
+            } 
+            LCD_ClearScreen();
+            printf("so thu hai la:%d",countS6);
+            
+                __delay_ms(1000);
+                }       
+    }
+    return 0;
+}

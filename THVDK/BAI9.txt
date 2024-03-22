@@ -1,0 +1,118 @@
+/*
+ * File:   Bai 1.c
+ * Author: Richard
+ *
+ * Created on Ngày 18 tháng 5 n?m 2018, 15:22
+ */
+
+#pragma config FNOSC = PRI
+#pragma config POSCMOD = HS
+#pragma config JTAGEN = OFF
+#pragma config WINDIS = OFF
+#pragma config FWDTEN = OFF
+
+#define FCY 8000000UL
+#include "xc.h"
+#include "stdio.h"
+#include "libpic30.h"
+#include "lcd.h"
+
+volatile uint16_t Timer1_flag = 0;
+void __attribute__((__interrupt__, auto_psv)) _T1Interrupt(void){
+    IFS0bits.T1IF = 0;
+    Timer1_flag = 1;
+}
+void Timer1_Init(){
+    T1CONbits.TON = 0;
+    T1CONbits.TCKPS = 0x03;
+    T1CONbits.TCS = 0;
+    
+    IPC0bits.T1IP = 1;
+    IFS0bits.T1IF = 0;
+    IEC0bits.T1IE = 1;
+}
+void Timer1_Start(){
+    T1CONbits.TON = 1;
+    
+}
+void  Timer1_Update(uint16_t adcResult)
+{
+        float time1 = ((adcResult*1.0*10/1024.0) * 0.45 + 0.5);
+        float time2 = 1.0 * 2 * 256 / FCY;
+        float time = time1 / time2;
+        PR1=time;
+        LCD_ClearScreen();
+        printf("%u",PR1);
+}
+void analogInit(){
+#ifdef __PIC24FJ1024GB610__
+    AD1CON2bits.PVCFG = 0x0;
+#else
+    AD1CON2bits.VCFG = 0x0;
+#endif
+    AD1CON3bits.ADCS = 0xff;
+    AD1CON1bits.SSRC = 0x0;
+    AD1CON3bits.SAMC = 0b10000;
+    AD1CON1bits.FORM = 0b00;
+    AD1CON2bits.SMPI = 0x0;
+    AD1CON1bits.ADON = 1;
+}
+uint16_t analogRead (int channel){
+    uint16_t i;
+    switch(channel){
+        case 4:
+
+    AD1PCFGbits.PCFG4 = 0;
+
+    break;
+        case 5:
+
+
+
+            AD1PCFGbits.PCFG5 = 0;
+
+            break;
+    }
+    AD1CHS = channel;
+    AD1CON1bits.SAMP = 1;
+    for (i = 0; i < 1000; i++){
+        Nop();
+    }
+    AD1CON1bits.SAMP = 0;
+    for (i = 0; i < 1000; i++){
+        Nop();
+    }
+    while(!AD1CON1bits.DONE);
+    return ADC1BUF0;
+}
+int main(void){
+    uint16_t adcResult;
+    uint16_t sec=0;
+    TRISA = 0;
+
+    analogInit();
+    LCD_Initialize();
+    Timer1_Init();
+    LATA=255;
+     Timer1_Start();
+     
+    while(1){
+        
+        adcResult = analogRead(5);
+        Timer1_Update(adcResult);
+        
+        if (Timer1_flag)
+            
+        {
+            if (LATA==255)
+            {
+                LATA=0;
+            }
+            else LATA = 255;
+                
+           Timer1_flag = 0;
+        }
+         
+    }
+     return 0;
+}

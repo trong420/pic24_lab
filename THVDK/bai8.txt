@@ -1,0 +1,72 @@
+/*
+ * File:   Bai 1.c
+ * Author: Richard
+ *
+ * Created on Ngày 18 tháng 5 n?m 2018, 15:22
+ */
+
+#pragma config FNOSC = PRI
+#pragma config POSCMOD = HS
+#pragma config JTAGEN = OFF
+#pragma config WINDIS = OFF
+#pragma config FWDTEN = OFF
+
+#include "xc.h"
+#include "stdio.h"
+#include "libpic30.h"
+#define FCY 8000000UL
+volatile uint16_t Timer1_flag = 0;
+void __attribute__ ((__interrupt__, auto_psv)) _T1Interrupt(void){
+    IFS0bits.T1IF = 0;
+    Timer1_flag = 1;
+}
+void Timer1_Init(uint16_t value){
+    T1CONbits.TON = 0;
+    T1CONbits.TCKPS = 0x03;
+    T1CONbits.TCS = 0;
+    PR1 = value;
+    IPC0bits.T1IP = 1;
+    IFS0bits.T1IF = 0;
+    IEC0bits.T1IE = 1;
+}
+void Timer1_Start(){
+    T1CONbits.TON = 1;
+}
+int main(void){
+    uint16_t sec=0;
+    int a,b;
+    TRISDbits.TRISD6=1;
+    TRISDbits.TRISD7=1;
+    TRISA = 0;
+#ifdef __PIC24FJ1024GB610__
+    ANSDbits.ANSD6=0;
+    ANSDbits.ANSD7=0;
+    ANSA = 0;
+#endif
+    Timer1_Init(15625);
+    Timer1_Start();
+    LCD_Initialize();
+    while (1)
+    {
+        LCD_ClearScreen();
+        if(Timer1_flag)
+        {
+            sec++;
+                if(!PORTDbits.RD7) 
+                {
+                    while(!PORTDbits.RD7);
+                    a=sec;
+                }
+                if(!PORTDbits.RD6)
+                {
+                    while(!PORTDbits.RD6);
+                    b=sec;
+                    printf("khoang thoi gian 2 lan nhan nut la: %d",b-a);
+                }
+        }
+        Timer1_flag=0;
+       
+    }
+    
+     return 0;
+}
