@@ -5,7 +5,14 @@
 </div>
 
 
-**LAB 1**
+
+
+<div align="center">
+
+<h2>LAB 1: I/O Port</h2>
+</div>
+
+
 - Code to read the value from push buttons S3 and S4. When S3 is pressed, it will count up, S4
 If pressed, the count will count down and the count value will be output to the LED / Code để đọc giá trị từ nút nhấn S3 và S4, khi S3 được nhấn thì sẽ đếm lên, S4
 được nhấn thì sẽ đếm xuống và giá trị đếm sẽ được xuất ra LED.
@@ -123,7 +130,12 @@ S4 presses 8 LEDs to light up and gradually darken from D1 to D8 / S4 nhấn 8 l
 S3 press the led to gradually light up starting from D1 to D8 / S3 nhấn led sáng dần bắt đầu từ D1 đến D8
 ![image](https://github.com/trong420/pic24_lab/assets/90754954/7b6b44b2-6a06-4a26-99c1-452f702ff5e8)
 
-**LAB2: TIMER**
+<div align="center">
+
+<h2>LAB2: TIMER</h2>
+</div>
+
+
 
 - Code to let the system count up after 500 ms using Timer 2 in timing and output mode
 LED output results. / Code để hệ thống đếm lên sau 500 ms sử dụng Timer 2 ở chế độ định thời, xuất
@@ -210,8 +222,12 @@ When pressing button S3, the LEDs increase in brightness by 20% due to simulatio
 
 ![image](https://github.com/trong420/pic24_lab/assets/90754954/30ec05d8-c542-4cfc-b5a1-f8a4a2f5955b)
 
+<div align="center">
 
-**LAB3: ADC**
+<h2>LAB3: ADC</h2>
+</div>
+
+
 
 - Code
 
@@ -271,7 +287,11 @@ LED D6 bị hư nên nó không hiện
 
 ![image](https://github.com/trong420/pic24_lab/assets/90754954/91b0d678-8e86-4eea-9e71-1103baaf6b9e)
 
-**LAB4: INTERRUPT**
+
+<div align="center">
+
+<h2>LAB4: INTERRUPT</h2>
+</div>
 
 - Configure PIC24/32 to perform an interrupt on Timer1 to turn the LED on and off every 500ms / Cấu hình PIC24/32 để thực hiện ngắt trên Timer1 để bật tắt led sau mỗi 500ms
 
@@ -372,7 +392,11 @@ When adjusting the temperature sensor and pressing the INT0 button, the 2 LED im
 ![image](https://github.com/trong420/pic24_lab/assets/90754954/45e0761c-ba23-4b2e-a7a3-4b793f395d32)
 
 
-**LAB5: UART**
+
+<div align="center">
+
+<h2>LAB5: UART</h2>
+</div>
 
 - Execute interrupt configuration every time a value is received for UART1(execute
 on board) / Thực hiện cấu hình ngắt mỗi khi nhận được giá trị cho UART1(thực hiện
